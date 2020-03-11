@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+import psutil
+import sys
+import math
+arg=sys.argv[1]
+print (arg)
+if arg == "cpu": 
+    print ( psutil.cpu_times() )
+    CPU = ( psutil.cpu_times() )
+elif arg == "mem":
+    print ( psutil.virtual_memory() )
+    MEM = ( psutil.virtual_memory() )
+elif arg == "pid":
+    def pretty_memory_size(nbytes):
+        metric = ("B", "kB", "MB", "GB", "TB")
+        if nbytes == 0:
+            return "%s %s" % ("0", "B")
+
+        nunit = int(math.floor(math.log(nbytes, 1024)))
+        nsize = round(nbytes/(math.pow(1024, nunit)), 2)
+        return '%s %s' % (format(nsize, ".2f"), metric[nunit])
+
+    for p in sorted(psutil.process_iter(), key=lambda p: p.memory_info().rss, reverse=True)[:20]:
+        print("%5s %10s %s" % (p.pid, pretty_memory_size(p.memory_info().rss), " ".join(filter(None,p.cmdline())) if p.cmdline() else p.name()))
+
+ 
+else:
+    print ("Invalid operation selected")
+
+
+
