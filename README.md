@@ -9,3 +9,4 @@ When container is started, run commands to get information:
 `$ ./metrics cpu`
 `$ ./metrics mem`
 `$ ./metrics pid`
+# metrics
